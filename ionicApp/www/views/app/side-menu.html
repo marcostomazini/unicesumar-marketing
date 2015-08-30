@@ -1,0 +1,56 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content class="post-size-14px">
+    <ion-nav-bar class="bar app-top-bar" align-title="center">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">          
+        </button>
+      </ion-nav-buttons>
+      <ion-nav-buttons side="right">
+          <button class="button button-icon icon ion-log-out" ui-sref="auth.login">            
+          </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left" class="main-menu" expose-aside-when="large">
+    <ion-content>
+      <ion-list>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.nova-acao">
+          <i class="icon ion-plus"></i>
+          <h2 class="menu-text">Criar ação</h2>
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.lista-acao">
+          <i class="icon ion-document-text"></i>
+          <h2 class="menu-text">Lista de ações</h2>
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.nova-pre-inscricao">
+          <i class="icon ion-clipboard"></i>
+          <h2 class="menu-text">Nova pré-inscrição</h2>
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.status-acao">
+          <i class="icon ion-alert"></i>
+          <h2 class="menu-text">Status da ação</h2>
+        </ion-item>        
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.configuracao">
+          <i class="icon ion-gear-a"></i>
+          <h2 class="menu-text">Configurações</h2>
+        </ion-item>
+       <!--  <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.forms">
+          <i class="icon ion-document"></i>
+          <h2 class="menu-text">Teste1</h2>
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.miscellaneous">
+          <i class="icon ion-asterisk"></i>
+          <h2 class="menu-text">Teste2</h2>
+        </ion-item> -->
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="auth.login">
+          <i class="icon ion-log-out"></i>
+          <h2 class="menu-text">Sair</h2>
+        </ion-item>
+    </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>

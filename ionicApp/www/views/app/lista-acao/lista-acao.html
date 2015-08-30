@@ -1,0 +1,46 @@
+
+<ion-view class="forms-view">
+  <ion-nav-title>
+    <span>Ações</span>
+  </ion-nav-title>
+  <ion-content>
+	<ul class="list">
+
+		<div class="list list-inset">
+			<label class="item item-input">
+				<i class="icon ion-search placeholder-icon"></i>
+				<input type="text" placeholder="Procurar" ng-model="searchText" data-clear-btn="true">				
+			</label>
+		</div>
+
+		<div class="item">        
+			<div class="button-bar">
+			  <a class="button button-assertive button-block" 
+			      ng-class="{'button-outline': !ativo, '': ativo}"
+			      ng-click="filtroAtivoInativo('ativo')">Ativo</a>
+			  <a class="button button-assertive button-block" 
+			      ng-class="{'button-outline': !inativo, '': inativo}"
+			      ng-click="filtroAtivoInativo('inativo')">Inativo</a>
+			</div>      
+		</div>
+
+    </ul>
+    
+	<ion-list>
+		Nome
+		<ion-item class="item-icon-right" ng-repeat="acao in acoesFiltrado = (acoes | filter: { nome: searchText, ativo: ativo })"> 
+			{{acao.nome}}
+			<div class="icon">				
+				<span class="ion-trash-a" ng-click="excluirAcao(acao)"></span>&nbsp;&nbsp;
+				<span class="ion-edit" ng-click="editarAcao(acao)"></span>&nbsp;&nbsp;
+				<span class="ion-play" ng-click="iniciarAcao(acao)"></span>
+			</div>			
+		</ion-item>		
+		<ion-item class="item-icon-right" ng-hide="acoesFiltrado.length"> 
+			Nenhuma ação localizada
+		</ion-item>		
+	</ion-list>	
+
+
+  </ion-content>
+</ion-view>

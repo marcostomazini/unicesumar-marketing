@@ -1,0 +1,81 @@
+<ion-view class="forms-view">
+
+  <ion-nav-title>
+    <span>Nova Pré-Inscrição</span>
+  </ion-nav-title>
+
+  <ion-nav-buttons side="left">
+      <button class="button button-icon icon" ng-click="doTotal()">
+        {{totalPreInscricoes}}
+      </button>
+  </ion-nav-buttons>
+
+  <ion-nav-buttons side="right">
+      <button class="button button-icon icon ion-unlocked" ng-click="doLiberar()">            
+      </button>
+  </ion-nav-buttons>
+
+  <ion-content>
+
+    <ul class="list">
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Nome</span>
+        <input type="text" placeholder="Nome" ng-model="novaPreInscricao.nome">
+      </label>
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">CPF</span>
+        <input type="text" placeholder="CPF" ng-model="novaPreInscricao.cpf">
+      </label>
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">E-mail</span>
+        <input type="email" placeholder="E-mail" ng-model="novaPreInscricao.email">
+      </label>
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Telefone</span>
+        <input type="tel" placeholder="Telefone" ng-model="novaPreInscricao.telefone">
+      </label>
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Polo</span>
+        <input type="text" placeholder="Polo" ng-model="novaPreInscricao.polo">
+      </label>   
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Modalidade</span>
+        <input type="text" placeholder="Modalidade" ng-model="novaPreInscricao.modalidade">
+      </label>   
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Curso</span>
+        <input type="text" placeholder="Curso" ng-model="novaPreInscricao.curso">
+      </label>
+
+      <div class="item">
+        Melhor horário para contato:        
+        <div class="button-bar">
+          <a class="button button-assertive button-block" 
+              ng-class="{'button-outline': !manha, '': manha}"
+              ng-click="selecionarPeriodo('manha')">Manhã</a>
+          <a class="button button-assertive button-block" 
+              ng-class="{'button-outline': !tarde, '': tarde}"
+              ng-click="selecionarPeriodo('tarde')">Tarde</a>
+          <a class="button button-assertive button-block" 
+              ng-class="{'button-outline': !noite, '': noite}"
+              ng-click="selecionarPeriodo('noite')">Noite</a>
+        </div>      
+      </div>
+
+    </ul>
+
+    <div class="bottom-content">
+      <button type="submit" class="button button-balanced button-block" ng-click="doFinalizar()">
+        Finalizar
+      </button>
+    </div>
+
+  </ion-content>
+</ion-view>

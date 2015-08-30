@@ -1,0 +1,56 @@
+<ion-view class="forms-view">
+  <ion-nav-title>
+    <span>Status da Ação</span>
+  </ion-nav-title>
+  <ion-content>
+
+	<div class="list">
+
+		<text class="item item-icon-left" href="#">
+			<i class="icon ion-clipboard"></i>
+			Total de pré-inscrições:
+			<span class="badge badge-assertive">{{totalPreInscricoes}}</span>
+		</text>
+
+		<div class="item">
+			<div class="row">
+				<canvas linechart options="options" data="acoesDataset" width="300" height="300"></canvas>
+			</div>
+		</div>		
+
+		<div class="item">
+			<div class="row">
+			   <div class="col text-center">
+				    Última sincronização:
+			   </div>
+			</div>
+			<div class="row">
+			   <div class="col text-center">
+				    {{ultimaSincronizacao}}
+			   </div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div class="row">
+			   <div class="col text-center">
+				    Última atualização de dados:
+			   </div>
+			</div>
+			<div class="row">
+			   <div class="col text-center">
+				    {{ultimaAtualizacao}}
+			   </div>
+			</div>
+		</div>
+
+		<text class="item item-icon-left" href="#">
+			<i class="icon ion-upload"></i>
+			Sincronizações Pendentes:
+			<span class="badge badge-assertive">{{sincronizacoesPendentes}}</span>
+		</text>
+
+	</div>
+
+  </ion-content>
+</ion-view>
