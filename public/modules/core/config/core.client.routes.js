@@ -13,7 +13,8 @@
       $locationProvider.html5Mode(false);
 
       // default route
-      $urlRouterProvider.otherwise('/home');
+      $urlRouterProvider.otherwise('/page/signin');
+      //$urlRouterProvider.otherwise('/home');
 
       // 
       // Application Routes
@@ -29,6 +30,11 @@
           url: '/home',
           templateUrl: 'modules/core/views/home.client.view.html'
         })
+        // .state('page.signin', {
+        //   url: '/signin',
+        //   templateUrl: 'modules/users/views/authentication/signin.client.view.html',
+        //   resolve: helper.resolveFor('modernizr', 'icons')
+        // })
         // 
         // CUSTOM RESOLVES
         //   Add your own resolves properties

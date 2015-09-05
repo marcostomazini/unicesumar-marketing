@@ -21,18 +21,18 @@ module.exports = function() {
 			// Set the provider data and include tokens
 			var providerData = profile._json;
 			providerData.accessToken = accessToken;
-			providerData.refreshToken = refreshToken;
+			providerData.refreshToken = refreshToken;			
 
 			// Create the user OAuth profile
 			var providerUserProfile = {
-				firstName: profile.name.givenName,
-				lastName: profile.name.familyName,
-				displayName: profile.displayName,
+				name: profile.name.givenName + ' ' + 
+					profile.name.familyName,
 				email: profile.emails[0].value,
-				username: profile.username,
+				username: profile.email,
 				provider: 'google',
 				providerIdentifierField: 'id',
-				providerData: providerData
+				providerData: providerData,
+				picture: providerData.picture
 			};
 
 			// Save the user OAuth profile

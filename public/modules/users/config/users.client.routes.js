@@ -1,13 +1,14 @@
 'use strict';
 
 // Setting up route
-angular.module('users').config(['$stateProvider',
-	function($stateProvider) {
+angular.module('users').config(['$stateProvider', 'RouteHelpersProvider',
+	function($stateProvider, helper) {
 		// Users state routing
 		$stateProvider.
 		state('page.signin', {
 			url: '/signin',
-			templateUrl: 'modules/users/views/authentication/signin.client.view.html'
+			templateUrl: 'modules/users/views/authentication/signin.client.view.html',
+			resolve: helper.resolveFor('modernizr', 'icons')
 		}).
 		state('page.signup', {
 			url: '/signup',

@@ -3,22 +3,22 @@
 // Init the application configuration module for AngularJS application
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
-	var applicationModuleName = 'angleApp';
+	var applicationModuleName = 'unimarketingApp';
 
 	var applicationModuleVendorDependencies = ['ngRoute',
-																						 'ngAnimate',
-																						 'ngStorage',
-																						 'ngTouch',
-																						 'ngCookies',
-																						 'pascalprecht.translate',
-																						 'ui.bootstrap',
-																						 'ui.router',
-																						 'oc.lazyLoad',
-																						 'cfp.loadingBar',
-																						 'ngSanitize',
-																						 'ngResource',
-																						 'ui.utils'
-																						];
+												 'ngAnimate',
+												 'ngStorage',
+												 'ngTouch',
+												 'ngCookies',
+												 'pascalprecht.translate',
+												 'ui.bootstrap',
+												 'ui.router',
+												 'oc.lazyLoad',
+												 'cfp.loadingBar',
+												 'ngSanitize',
+												 'ngResource',
+												 'ui.utils'
+												];
 	// Add a new vertical module
 	var registerModule = function(moduleName, dependencies) {
 		// Create angular module
@@ -54,10 +54,6 @@ angular.element(document).ready(function() {
 	//Then init the app
 	angular.bootstrap(document, [ApplicationConfiguration.applicationModuleName]);
 });
-'use strict';
-
-// Use Applicaion configuration module to register a new module
-ApplicationConfiguration.registerModule('articles');
 (function() {
     'use strict';
 
@@ -137,6 +133,10 @@ ApplicationConfiguration.registerModule('page');
 
 // Use Applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('users');
+'use strict';
+
+// Use Applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('usuarios-mobile');
 (function() {
     'use strict';
 
@@ -146,119 +146,6 @@ ApplicationConfiguration.registerModule('users');
 
 })();
 
-'use strict';
-
-// Configuring the Articles module
-angular.module('articles').run(['Menus',
-	function(Menus) {
-		// Set top bar menu items
-		Menus.addMenuItem('sidebar', 'Articles', 'articles', 'dropdown', '/articles(/.*)?', false, null, 20);
-		Menus.addSubMenuItem('sidebar', 'articles', 'List Articles', 'articles');
-		Menus.addSubMenuItem('sidebar', 'articles', 'New Article', 'articles/create');
-	}
-]);
-'use strict';
-
-// Setting up route
-angular.module('articles').config(['$stateProvider',
-	function($stateProvider) {
-		// Articles state routing
-		$stateProvider.
-		state('app.listArticles', {
-			url: '/articles',
-			title: 'List Articles',
-			templateUrl: 'modules/articles/views/list-articles.client.view.html'
-		}).
-		state('app.createArticle', {
-			url: '/articles/create',
-			title: 'New Article',
-			templateUrl: 'modules/articles/views/create-article.client.view.html'
-		}).
-		state('app.viewArticle', {
-			url: '/articles/:articleId',
-			title: 'View Article',
-			templateUrl: 'modules/articles/views/view-article.client.view.html',
-			controller: 'ArticlesController'
-		}).
-		state('app.editArticle', {
-			title: 'Edit Article',
-			url: '/articles/:articleId/edit',
-			templateUrl: 'modules/articles/views/edit-article.client.view.html'
-		});
-	}
-]);
-'use strict';
-
-angular.module('articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Articles',
-	function($scope, $stateParams, $location, Authentication, Articles) {
-		$scope.authentication = Authentication;
-
-		$scope.create = function() {
-			var article = new Articles({
-				title: this.title,
-				content: this.content
-			});
-			article.$save(function(response) {
-				$location.path('articles/' + response._id);
-
-				$scope.title = '';
-				$scope.content = '';
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
-
-		$scope.remove = function(article) {
-			if (article) {
-				article.$remove();
-
-				for (var i in $scope.articles) {
-					if ($scope.articles[i] === article) {
-						$scope.articles.splice(i, 1);
-					}
-				}
-			} else {
-				$scope.article.$remove(function() {
-					$location.path('articles');
-				});
-			}
-		};
-
-		$scope.update = function() {
-			var article = $scope.article;
-
-			article.$update(function() {
-				$location.path('articles/' + article._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
-
-		$scope.find = function() {
-			$scope.articles = Articles.query();
-		};
-
-		$scope.findOne = function() {
-			$scope.article = Articles.get({
-				articleId: $stateParams.articleId
-			});
-		};
-	}
-]);
-'use strict';
-
-//Articles service used for communicating with the articles REST endpoints
-angular.module('articles').factory('Articles', ['$resource',
-	function($resource) {
-		return $resource('articles/:articleId', {
-			articleId: '@_id'
-		}, {
-			update: {
-				method: 'PUT'
-			}
-		});
-	}
-]);
 (function() {
     'use strict';
 
@@ -361,7 +248,7 @@ angular.module('articles').factory('Articles', ['$resource',
     coreMenu.$inject = ['Menus'];
     function coreMenu(Menus){
       // Add default menu entry
-      Menus.addMenuItem('sidebar', 'Home', 'home', null, '/home', true, null, null, 'icon-home');
+      Menus.addMenuItem('sidebar', 'Inicio', 'home', null, '/home', true, null, null, 'icon-home');
     }
 
 })();
@@ -380,7 +267,8 @@ angular.module('articles').factory('Articles', ['$resource',
       $locationProvider.html5Mode(false);
 
       // default route
-      $urlRouterProvider.otherwise('/home');
+      $urlRouterProvider.otherwise('/page/signin');
+      //$urlRouterProvider.otherwise('/home');
 
       // 
       // Application Routes
@@ -396,6 +284,11 @@ angular.module('articles').factory('Articles', ['$resource',
           url: '/home',
           templateUrl: 'modules/core/views/home.client.view.html'
         })
+        // .state('page.signin', {
+        //   url: '/signin',
+        //   templateUrl: 'modules/users/views/authentication/signin.client.view.html',
+        //   resolve: helper.resolveFor('modernizr', 'icons')
+        // })
         // 
         // CUSTOM RESOLVES
         //   Add your own resolves properties
@@ -917,9 +810,7 @@ angular.module('page').config(['$stateProvider',
           // ensure class is present for styling
           el.addClass('preloader');
 
-          appReady().then(function(){
-            $timeout(endCounter, 1000);
-          });
+          appReady().then(endCounter);
 
           timeout = $timeout(startCounter);
 
@@ -928,7 +819,7 @@ angular.module('page').config(['$stateProvider',
           function startCounter() {
 
             var remaining = 100 - counter;
-            counter = counter + (0.15 * Math.pow(1 - Math.sqrt(remaining), 2));
+            counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
 
             scope.loadCounter = parseInt(counter, 10);
 
@@ -951,12 +842,22 @@ angular.module('page').config(['$stateProvider',
 
           function appReady() {
             var deferred = $q.defer();
+            var viewsLoaded = 0;
             // if this doesn't sync with the real app ready
             // a custom event must be used instead
             var off = scope.$on('$viewContentLoaded', function () {
-              // with resolve this fires only once
-              deferred.resolve();
-              off();
+              viewsLoaded ++;
+              // we know there are at least two views to be loaded 
+              // before the app is ready (1-index.html 2-app*.html)
+              if ( viewsLoaded === 2) {
+                // with resolve this fires only once
+                $timeout(function(){
+                  deferred.resolve();
+                }, 3000);
+
+                off();
+              }
+
             });
 
             return deferred.promise;
@@ -1557,13 +1458,14 @@ angular.module('users').config(['$httpProvider',
 'use strict';
 
 // Setting up route
-angular.module('users').config(['$stateProvider',
-	function($stateProvider) {
+angular.module('users').config(['$stateProvider', 'RouteHelpersProvider',
+	function($stateProvider, helper) {
 		// Users state routing
 		$stateProvider.
 		state('page.signin', {
 			url: '/signin',
-			templateUrl: 'modules/users/views/authentication/signin.client.view.html'
+			templateUrl: 'modules/users/views/authentication/signin.client.view.html',
+			resolve: helper.resolveFor('modernizr', 'icons')
 		}).
 		state('page.signup', {
 			url: '/signup',
@@ -1606,30 +1508,50 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		$scope.authentication = Authentication;
 
 		// If user is signed in then redirect back home
-		if ($scope.authentication.user) $location.path('/');
+		if ($scope.authentication.user) $location.path('/home');
 
 		$scope.signup = function() {
-			$http.post('/auth/signup', $scope.credentials).success(function(response) {
-				// If successful we assign the response to the global user model
-				$scope.authentication.user = response;
+			if($scope.registerForm.$valid) {
+				$scope.credentials.username = $scope.credentials.email;
+				$http.post('/auth/signup', $scope.credentials).success(function(response) {
+					// If successful we assign the response to the global user model
+					$scope.authentication.user = response;
 
-				// And redirect to the index page
-				$location.path('/');
-			}).error(function(response) {
-				$scope.error = response.message;
-			});
+					// And redirect to the index page
+					$location.path('/home');
+				}).error(function(response) {
+					$scope.error = response.message;
+					noty({
+					    text: response.message,
+					    type: response.type
+					});
+				});
+			} else {
+				$scope.registerForm.name.$dirty = true;
+				$scope.registerForm.account_email.$dirty = true;
+				$scope.registerForm.account_password.$dirty = true;
+				$scope.registerForm.account_password_confirm.$dirty = true;
+			}
 		};
 
 		$scope.signin = function() {
-			$http.post('/auth/signin', $scope.credentials).success(function(response) {
-				// If successful we assign the response to the global user model
-				$scope.authentication.user = response;
+			if($scope.loginForm.$valid) {
+				$http.post('/auth/signin', $scope.credentials).success(function(response) {
+					// If successful we assign the response to the global user model
+					$scope.authentication.user = response;
 
-				// And redirect to the index page
-				$location.path('/');
-			}).error(function(response) {
-				$scope.error = response.message;
-			});
+					// And redirect to the index page
+					$location.path('/home');
+				}).error(function(response) {
+					$scope.error = response.message;
+					console.log(response.message);
+					
+				});
+			} else {
+				// set as dirty if the user click directly to login so we show the validation messages
+				$scope.loginForm.account_email.$dirty = true;
+				$scope.loginForm.account_password.$dirty = true;
+			}
 		};
 	}
 ]);
@@ -1768,6 +1690,102 @@ angular.module('users').factory('Authentication', [
 angular.module('users').factory('Users', ['$resource',
 	function($resource) {
 		return $resource('users', {}, {
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
+]);
+'use strict';
+
+// Configuring the Articles module
+angular.module('usuarios-mobile').run(['Menus',
+	function(Menus) {
+		// Set top bar menu items
+		Menus.addMenuItem('sidebar', 'Usuários Mobile', 'usuarios-mobile', 'dropdown', '/usuarios-mobile(/.*)?', false, null, 20, 'icon-user');
+		Menus.addSubMenuItem('sidebar', 'usuarios-mobile', 'Listar usuários', 'usuarios-mobile');
+	}
+]);
+'use strict';
+
+// Setting up route
+angular.module('usuarios-mobile').config(['$stateProvider',
+	function($stateProvider) {
+		// Articles state routing
+		$stateProvider.
+		state('app.listUsuariosMobile', {
+			url: '/usuarios-mobile',
+			title: 'Listar Usuários Mobile',
+			templateUrl: 'modules/usuarios-mobile/views/list-usuarios-mobile.client.view.html'
+		});
+	}
+]);
+'use strict';
+
+angular.module('usuarios-mobile').controller('UsuarioMobileController', ['$scope', '$stateParams', '$location', 'Authentication', 'UsuariosMobile',
+	function($scope, $stateParams, $location, Authentication, UsuariosMobile) {
+		$scope.authentication = Authentication;
+
+		$scope.create = function() {
+			var article = new Articles({
+				title: this.title,
+				content: this.content
+			});
+			article.$save(function(response) {
+				$location.path('articles/' + response._id);
+
+				$scope.title = '';
+				$scope.content = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		$scope.remove = function(article) {
+			if (article) {
+				article.$remove();
+
+				for (var i in $scope.articles) {
+					if ($scope.articles[i] === article) {
+						$scope.articles.splice(i, 1);
+					}
+				}
+			} else {
+				$scope.article.$remove(function() {
+					$location.path('articles');
+				});
+			}
+		};
+
+		$scope.update = function() {
+			var article = $scope.article;
+
+			article.$update(function() {
+				$location.path('articles/' + article._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		$scope.find = function() {
+			$scope.articles = Articles.query();
+		};
+
+		$scope.findOne = function() {
+			$scope.article = Articles.get({
+				articleId: $stateParams.articleId
+			});
+		};
+	}
+]);
+'use strict';
+
+//Articles service used for communicating with the articles REST endpoints
+angular.module('usuarios-mobile').factory('UsuariosMobile', ['$resource',
+	function($resource) {
+		return $resource('usuarios-mobile/:usuarioMobileId', {
+			articleId: '@_id'
+		}, {
 			update: {
 				method: 'PUT'
 			}

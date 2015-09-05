@@ -52,17 +52,11 @@
       </ul>  -->
       <!-- END Left navbar-->
       <!-- START Right Navbar-->
-      <ul class="nav navbar-nav navbar-right ml0">
-         <!-- Search icon-->
-         <li>
-            <a search-open="">
-               <em class="icon-magnifier"></em>
-            </a>
-         </li>
+      <ul class="nav navbar-nav navbar-right ml0" data-ng-show="authentication.user">         
          <!-- START Offsidebar button-->
          <li>
-            <a href="" ng-click="app.offsidebarOpen = !app.offsidebarOpen">
-               <em class="icon-notebook"></em>
+            <a href="/auth/signout">
+               <em class="icon-logout"></em>
             </a>
          </li>
          <!-- END Offsidebar menu-->
@@ -70,22 +64,12 @@
       <ul class="nav navbar-nav" data-ng-show="authentication.user">
          <li class="dropdown" dropdown>
             <a href class="dropdown-toggle" dropdown-toggle>
-               <span data-ng-bind="authentication.user.displayName"></span>
+               <span data-ng-bind="authentication.user.name"></span>
                <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
                <li>
-                  <a href="/#!/settings/profile">Edit Profile</a>
-               </li>
-               <li>
-                  <a href="/#!/settings/accounts">Manage Social Accounts</a>
-               </li>
-               <li data-ng-show="authentication.user.provider === 'local'">
-                  <a href="/#!/settings/password">Change Password</a>
-               </li>
-               <li class="divider"></li>
-               <li>
-                  <a href="/auth/signout">Signout</a>
+                  <a href="/auth/signout">Sair</a>
                </li>
             </ul>
          </li>
@@ -99,6 +83,7 @@
             <a href="/#!/page/signin">Sign In</a>
          </li>
       </ul>
+
       <!-- END Right Navbar-->
    </div>
    <!-- END Nav wrapper-->

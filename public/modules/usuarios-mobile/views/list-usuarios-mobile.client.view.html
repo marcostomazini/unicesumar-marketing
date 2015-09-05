@@ -1,0 +1,97 @@
+<h3>Usuários Mobile
+   <small>cadastro e liberação de usuários mobile</small>
+</h3>
+
+<div ng-controller="UsuarioMobileController as ctrl" class="container-fluid" ng-init="init()">
+   <!-- START DATATABLE 1 -->
+   <div class="row">
+      <div class="col-lg-12">
+         <div class="panel panel-default">
+            <div class="panel-heading">
+               Usuários Mobile |
+               <small>lista dos usuários mobile</small>
+            </div>
+            <div class="panel-body">
+
+		    	
+		    	<div class="panel panel-default">
+				   <div class="panel-heading">Demo Table #1</div>
+				   <!-- START table-responsive-->
+				   <div class="table-responsive">
+				      <table id="table-ext-1" class="table table-bordered table-hover">
+				         <thead>
+				            <tr>
+				               <th>Nome</th>
+				               <th>Usuario</th>
+				               <th>Status</th>
+				               <th>Ação</th>
+				            </tr>
+				         </thead>
+				         <tbody>
+				            <tr>
+				               <td>@twitter</td>
+				               <td>Larry</td>
+				               <td>
+				               		<div class="label label-danger">Bloqueado</div>
+				               	</td>
+				               <td>
+				                  <div class="checkbox c-checkbox">
+				                     <label>
+				                        <input type="checkbox" />
+				                        <span class="fa fa-check"></span>
+				                     </label>
+				                  </div>
+				               </td>
+				            </tr>
+				            <tr>
+				               <td>@mdo</td>
+				               <td>Mark</td>
+				               <td>
+				               		<div class="label label-success">Liberado</div>
+				               	</td>
+				               <td>
+				                  <div class="checkbox c-checkbox">
+				                     <label>
+				                        <input type="checkbox" />
+				                        <span class="fa fa-check"></span>
+				                     </label>
+				                  </div>
+				               </td>
+				            </tr>
+				            <tr>
+				               <td>@fat</td>
+				               <td>Jacob</td>
+				               <td>
+				               		<div class="label label-warning">Pendente</div>
+				               	</td>
+				               <td>
+				                  <div class="checkbox c-checkbox">
+				                     <label>
+				                        <input type="checkbox" />
+				                        <span class="fa fa-check"></span>
+				                     </label>
+				                  </div>
+				               </td>
+				            </tr>
+				         </tbody>
+				      </table>
+				   </div>
+				   <!-- END table-responsive-->
+				   <div class="panel-footer">
+				      <div class="row">
+				         <div class="col-lg-2">
+				            <div class="input-group">
+				               <input type="text" placeholder="Search" class="input-sm form-control" />
+				               <span class="input-group-btn">
+				                  <button type="button" class="btn btn-sm btn-default">Search</button>
+				               </span>
+				            </div>
+				         </div>				        
+				      </div>
+				   </div>
+				</div>
+			</div>
+         </div>
+      </div>
+   </div>
+</div>

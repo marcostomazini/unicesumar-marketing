@@ -7,8 +7,9 @@ var getUniqueErrorMessage = function(err) {
 	var output;
 
 	try {
+		console.log(err.err);
 		var fieldName = err.err.substring(err.err.lastIndexOf('.$') + 2, err.err.lastIndexOf('_1'));
-		output = fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + ' already exists';
+		output = fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + ' já existe';
 
 	} catch (ex) {
 		output = 'Unique field already exists';
@@ -22,7 +23,6 @@ var getUniqueErrorMessage = function(err) {
  */
 exports.getErrorMessage = function(err) {
 	var message = '';
-
 	if (err.code) {
 		switch (err.code) {
 			case 11000:
@@ -32,10 +32,12 @@ exports.getErrorMessage = function(err) {
 			default:
 				message = 'Something went wrong';
 		}
-	} else {
+	} else if (err.errors) {
 		for (var errName in err.errors) {
 			if (err.errors[errName].message) message = err.errors[errName].message;
 		}
+	} else {
+		message = err.message;
 	}
 
 	return message;

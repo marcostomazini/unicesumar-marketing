@@ -2,7 +2,7 @@
 
 module.exports = {
 	app: {
-		title: 'Angle',
+		title: 'UniMarketing - Sistema para Inscrições',
 		description: 'Bootstrap Admin Theme + Meanjs',
 		keywords: 'MongoDB, Express, AngularJS, Node.js'
 	},

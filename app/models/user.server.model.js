@@ -25,58 +25,59 @@ var validateLocalStrategyPassword = function(password) {
  * User Schema
  */
 var UserSchema = new Schema({
-	firstName: {
+	name: {
 		type: String,
 		trim: true,
 		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your first name']
-	},
-	lastName: {
-		type: String,
-		trim: true,
-		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your last name']
-	},
-	displayName: {
-		type: String,
-		trim: true
+		validate: [validateLocalStrategyProperty, 'Nome completo não preenchido']
 	},
 	email: {
 		type: String,
 		trim: true,
 		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your email'],
-		match: [/.+\@.+\..+/, 'Please fill a valid email address']
+		unique: 'Já existe um email cadastrado',
+		validate: [validateLocalStrategyProperty, 'Email não preenchido'],
+		match: [/.+\@.+\..+/, 'Digite um email válido']
 	},
+	picture: {
+		type: String,
+		trim: true,
+		default: ''
+	},
+  	ativo: { 
+  		type: Boolean, 
+  		default: true
+  	}, 
 	username: {
 		type: String,
-		unique: 'testing error message',
-		required: 'Please fill in a username',
+		//unique: 'Já existe um usuário cadastrado',
+		required: 'Username é obrigatório',
 		trim: true
 	},
 	password: {
 		type: String,
 		default: '',
-		validate: [validateLocalStrategyPassword, 'Password should be longer']
+		validate: [validateLocalStrategyPassword, 'Digite uma senha mais forte']
 	},
 	salt: {
 		type: String
 	},
 	provider: {
 		type: String,
-		required: 'Provider is required'
+		required: 'Provider é obrigatório'
 	},
 	providerData: {},
 	additionalProvidersData: {},
 	roles: {
 		type: [{
 			type: String,
-			enum: ['user', 'admin']
+			enum: ['admin', 'mobile']
 		}],
-		default: ['user']
+		default: ['admin']
 	},
 	updated: {
-		type: Date
+		type: Date,
+		default: Date.now
 	},
 	created: {
 		type: Date,
@@ -143,4 +144,13 @@ UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 	});
 };
 
-mongoose.model('User', UserSchema);
+var user = mongoose.model('User', UserSchema);
+
+// user.schema.path('email').validate(function (value, respond) {
+// 	console.log(value);
+// 	console.log(respond);
+//     user.findOne({ email: value }, function (err, user) {
+//         if(user) respond(false);
+//         respond(true);
+//     });                                                                                                                                                  
+// }, 'Esse email já está registrado em nosso sistema');
