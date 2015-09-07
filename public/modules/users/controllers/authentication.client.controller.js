@@ -18,10 +18,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 					$location.path('/home');
 				}).error(function(response) {
 					$scope.error = response.message;
-					noty({
-					    text: response.message,
-					    type: response.type
-					});
+					console.log(response.message);
 				});
 			} else {
 				$scope.registerForm.name.$dirty = true;

@@ -32,7 +32,7 @@ var UsuarioMobileSchema = new Schema({
 	},
   	ativo: { 
   		type: Boolean, 
-  		default: true
+  		default: null
   	},
 	password: {
 		type: String,

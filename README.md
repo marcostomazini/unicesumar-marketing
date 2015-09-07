@@ -32,6 +32,21 @@ After the install process is over, you'll be able to run your application using 
 $ grunt
 ```
 
+## Liberando usuarios do sistema
+Executar o mongo e acessar a base:
+
+```
+$ mongo
+> show dbs
+> use NOME_BASE
+> db.users.find()
+> db.users.find({"_id": ObjectId("55ed62263a35ec5e1177cddf")})
+> db.users.update({"_id": ObjectId("55ed62263a35ec5e1177cddf")}, {$set: { ativo: true } })
+```
+
+Token: (password)
+Authorization: Bearer H0g2Co+uvRQqRxprMtSsp16HWzTCfGTPOabR6DnVUxsoA/ZpNFoICGiuUa4ZgNAYz2TCZF+7gugFAGmmwHuKUA== 
+
 Your application should run on the 3000 port so in your browser just go to [http://localhost:3000](http://localhost:3000)
                             
 That's it! your application should be running by now, to proceed with your development check the other sections in this documentation. 

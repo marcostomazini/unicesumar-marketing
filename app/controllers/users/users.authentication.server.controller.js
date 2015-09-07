@@ -32,16 +32,22 @@ exports.signup = function(req, res) {
 			user.password = undefined;
 			user.salt = undefined;
 
-			req.login(user, function(err) {
-				if (err) {					
-					res.status(400).send({
-						message: err,
-						type: 'error'
-					});
-				} else {
-					res.json(user);
-				}
-			});
+			if (user.ativo == false) {
+				res.status(401).send({
+					message: 'Usuário não autorizado!'
+				});
+			} else {
+					req.login(user, function(err) {
+					if (err) {					
+						res.status(400).send({
+							message: err,
+							type: 'error'
+						});
+					} else {
+						res.json(user);
+					}
+				});
+			}
 		}
 	});
 };
@@ -58,13 +64,19 @@ exports.signin = function(req, res, next) {
 			user.password = undefined;
 			user.salt = undefined;
 
-			req.login(user, function(err) {
-				if (err) {
-					res.status(400).send(err);
-				} else {
-					res.json(user);
-				}
-			});
+			if (user.ativo == false) {
+				res.status(401).send({
+					message: 'Usuário não autorizado!'
+				});
+			} else {
+				req.login(user, function(err) {
+					if (err) {
+						res.status(400).send(err);
+					} else {
+						res.json(user);
+					}
+				});
+			}
 		}
 	})(req, res, next);
 };
@@ -86,13 +98,18 @@ exports.oauthCallback = function(strategy) {
 			if (err || !user) {
 				return res.redirect('/#!/signin');
 			}
-			req.login(user, function(err) {
-				if (err) {
-					return res.redirect('/#!/signin');
-				}
 
-				return res.redirect(redirectURL || '/');
-			});
+			if (user.ativo == false) {
+				return res.redirect('/#!/signin');
+			} else {
+				req.login(user, function(err) {
+					if (err) {
+						return res.redirect('/#!/signin');
+					}
+
+					return res.redirect(redirectURL || '/');
+				});
+			}
 		})(req, res, next);
 	};
 };

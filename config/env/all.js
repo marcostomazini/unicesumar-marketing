@@ -2,13 +2,13 @@
 
 module.exports = {
 	app: {
-		title: 'UniMarketing - Sistema para Inscrições',
-		description: 'Bootstrap Admin Theme + Meanjs',
-		keywords: 'MongoDB, Express, AngularJS, Node.js'
+		title: 'UniMarketing - Sistema para Pré-Inscrições',
+		description: 'Unicesumar',
+		keywords: 'unicesumar, marketing, inscricoes'
 	},
 	port: process.env.PORT || 3000,
 	templateEngine: 'swig',
-	sessionSecret: 'MEAN',
+	sessionSecret: 'ARQUITETAWEB2015',
 	sessionCollection: 'sessions',
 	assets: {
 		lib: {

@@ -20,6 +20,9 @@ exports.create = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+			// Remove sensitive data before login
+			usuarioMobile.password = undefined;
+			usuarioMobile.salt = undefined;
 			res.json(usuarioMobile);
 		}
 	});

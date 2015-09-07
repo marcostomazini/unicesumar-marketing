@@ -24,10 +24,18 @@ exports.userByID = function(req, res, next, id) {
 /**
  * Require login routing middleware
  */
-exports.requiresLogin = function(req, res, next) {
+exports.requiresLogin = function(req, res, next) {	
+
 	if (!req.isAuthenticated()) {
 		return res.status(401).send({
 			message: 'User is not logged in'
+		});
+	}
+
+	if (req.user.ativo == false) {
+		req.logout();
+		return res.status(401).send({
+			message: 'Usuario nao esta liberado'
 		});
 	}
 
@@ -42,7 +50,7 @@ exports.hasAuthorization = function(roles) {
 
 	return function(req, res, next) {
 		_this.requiresLogin(req, res, function() {
-			if (_.intersection(req.user.roles, roles).length) {
+			if (_.intersection(req.user.roles, roles).length && req.user.ativo == true) {
 				return next();
 			} else {
 				return res.status(403).send({
