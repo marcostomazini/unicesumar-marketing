@@ -9,7 +9,8 @@ angular.module('users').controller('UsuarioSistemaController', ['$scope', '$stat
 		.newOptions()
 	    .withPaginationType('full_numbers')
 	    .withOption('bLengthChange', false)
-	    .withOption('bInfo', false);
+	    .withOption('bInfo', false)
+	    .withBootstrap();
 	
 		this.dtColumnDefs = [
 			DTColumnDefBuilder

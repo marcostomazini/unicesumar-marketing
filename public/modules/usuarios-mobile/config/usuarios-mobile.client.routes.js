@@ -9,7 +9,7 @@ angular.module('usuarios-mobile').config(['$stateProvider', 'RouteHelpersProvide
 			url: '/usuarios-mobile',
 			title: 'Listar Usuários Mobile',
 			templateUrl: 'modules/usuarios-mobile/views/list-usuarios-mobile.client.view.html',
-			resolve: helper.resolveFor('datatables')
+			resolve: helper.resolveFor('datatables', 'xeditable')
 		});
 	}
 ]);

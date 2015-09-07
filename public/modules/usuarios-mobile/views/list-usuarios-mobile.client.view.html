@@ -18,8 +18,9 @@
 					<tr>
 						<th>#</th>
 						<th style="cursor:pointer;" class="col-sm-1 btn-primary">
-							<a class="col-xs-12 btn btn-primary" href="{{urlBase}}/create">Inserir</a>
+							<a class="col-xs-12 btn btn-primary" ng-click="addItem()">Inserir</a>
 						</th>
+						<th>Nome</th>
 						<th>Email</th>
 						<th>Status</th>
 						<th>Ação</th>
@@ -34,7 +35,7 @@
 							<div class="row">
 								<div class="col-md-12 text-center">
 									<div class="col-md-6 text-center">
-										<a ng-href="{{urlBase}}/{{item._id}}/edit">
+										<a ng-click="rowform.$show()">
 											<i class="fa icon-pencil"></i>
 										</a>					
 									</div>
@@ -48,7 +49,29 @@
 							
 						</td>
 
-						<td>{{ item.email }}</td>
+						<td>		
+							<span 
+								editable-text="item.name" 
+								e-name="name" 
+								e-form="rowform" 
+								onbeforesave="checkName($data, item.id)" 
+								buttons="no"
+								e-required>
+								{{ item.name || 'não definido' }}
+							</span>							
+						</td>
+	
+						<td>
+							<span 
+								editable-text="item.email" 
+								e-name="email" 
+								e-form="rowform" 
+								onbeforesave="checkName($data, item.id)" 
+								buttons="no"
+								e-required>
+								{{ item.email || 'não definido' }}
+							</span>		
+						</td>
 
 						<td>
 							<div class="label label-warning" ng-if="item.ativo == null">Recém cadastrado</div>
