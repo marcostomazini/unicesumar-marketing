@@ -8,7 +8,7 @@ angular.module('users').config(['$stateProvider', 'RouteHelpersProvider',
 		state('page.signin', {
 			url: '/signin',
 			templateUrl: 'modules/users/views/authentication/signin.client.view.html',
-			resolve: helper.resolveFor('modernizr', 'icons')
+			resolve: helper.resolveFor('modernizr', 'icons', 'oitozero.ngSweetAlert', 'toaster')
 		}).
 		state('page.signup', {
 			url: '/signup',

@@ -1,16 +1,29 @@
 'use strict';
 
-angular.module('usuarios-mobile').controller('UsuarioMobileController', ['$scope', '$stateParams', '$location', 
+angular.module('usuarios-mobile').controller('UsuarioMobileController', [
+	'$scope', 
+	'$interval',
+	'$stateParams', 
+	'$location', 
 	'Authentication', 'UsuariosMobile', 
 	'DTOptionsBuilder', 
 	'DTColumnDefBuilder', 
 	'editableOptions', 
 	'editableThemes',
-	function($scope, $stateParams, $location, Authentication, UsuariosMobile, 
+	'SweetAlert',
+	'toaster',
+	function($scope, 
+		$interval,
+		$stateParams, 
+		$location, 
+		Authentication, 
+		UsuariosMobile, 
 		DTOptionsBuilder, 
 		DTColumnDefBuilder,
 		editableOptions, 
-		editableThemes) {
+		editableThemes,
+		SweetAlert,
+		toaster) {
 		$scope.authentication = Authentication;
 
 		this.dtOptions = DTOptionsBuilder
@@ -34,13 +47,7 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', ['$scope
 		$scope.urlBase = '/#!/usuarios-mobile';
 
 		editableOptions.theme = 'bs3';
-
 		editableThemes.bs3.inputClass = 'input-sm';
-		editableThemes.bs3.buttonsClass = 'btn-sm';
-		editableThemes.bs3.submitTpl = '<button type="submit" class="btn btn-success" ng-click="saveItem(item)"><span class="fa fa-check"></span></button>';
-		editableThemes.bs3.cancelTpl = '<button type="button" class="btn btn-default" ng-click="$form.$cancel()">'+
-		                               '<span class="fa fa-times text-muted"></span>'+
-		                             '</button>';
 
 		// Context
 		$scope.authentication = Authentication;
@@ -51,7 +58,7 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', ['$scope
 				name: null,
 				email: null
 			};
-			$scope.usuariosMobile.unshift(novoUsuario);
+			$scope.usuariosMobile.unshift(novoUsuario);			
 		};
 
 		$scope.editItem = function(item) {
@@ -60,44 +67,43 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', ['$scope
 
 		$scope.saveItem = function(item) {
 			console.log(item);
-		};
+		};		
 
-		$scope.deleteConfirm = function(index) {
-			noty({
-				modal: true,
-		        text: 'Tem certeza que deseja deletar o registro?', 
-		        buttons: [
-		            { addClass: 'btn btn-primary', text: 'Sim', onClick: function($noty) {
-		                    $noty.close();
-		                    var caixa = $scope.caixas[index];
+		$interval(function() {
+        	toaster.pop('info', 'Nova Sincronização', 'Pré-Inscrição Recebida');
+		}, 20000);
 
-							if (caixa) {							
-								caixa.$remove( function (response) {
-									if (response) {
-										$scope.caixas = _.without($scope.caixas, caixa);
+		$scope.deleteConfirm = function(index) {			
+			SweetAlert.swal({   
+				title: 'Você tem certeza?',   
+				text: 'Após deletado não vai ser mais possível acessar o registro!',   
+				type: 'warning',   
+				showCancelButton: true,   
+				confirmButtonColor: '#DD6B55',   
+				confirmButtonText: 'Sim',   
+				cancelButtonText: 'Não',
+				closeOnConfirm: false,   
+				closeOnCancel: false 
+			}, function(isConfirm){  
+				if (isConfirm) {
+					var usuarioMobile = $scope.usuariosMobile[index];
+					if (usuarioMobile) {							
+						usuarioMobile.$remove( function (response) {
+							if (response) {
+								$scope.usuariosMobile = _.without($scope.usuariosMobile, usuarioMobile);
 
-										noty({
-										    text: response.message,
-										    type: response.type
-										});
-									}
-								}, function(errorResponse) {
-									$scope.error = errorResponse.data.message;
-									noty({
-									    text: errorResponse.data.message,
-									    type: errorResponse.data.type
-									});
-								});
+								SweetAlert.swal('Deletado!', 'O registro foi deletado.', 'success');
 							}
-		                }
-		            },
-		            { 
-		                addClass: 'btn btn-warning', text: 'Não', onClick: function($noty) {
-		                    $noty.close();
-		                }
-		            }
-		        ]
-		    }); 
+						}, function(errorResponse) {
+							$scope.error = errorResponse.data.message;
+							SweetAlert.swal('Erro!', errorResponse.data.message, errorResponse.data.type);
+						});
+					}
+
+				} else {     
+					SweetAlert.swal('Cancelado', 'O registro não foi removido :)', 'error');   
+				} 
+            });
 		};
 	}
 ]);

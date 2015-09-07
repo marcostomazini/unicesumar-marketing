@@ -44,8 +44,10 @@
     "simple-line-icons": "0.1.1",
     "jquery.browser": "master",
     "angular-datatables": "~0.5.0",
-    "datatables-tabletools": "~2.2.4",
-    "angular-xeditable": "~0.1.9"
+    "angular-xeditable": "~0.1.9",
+    "angular-sweetalert": "1.1.0",
+    "angularjs-toaster": "~0.4.15",
+    "underscore": "~1.8.3"
   },
   "resolutions": {
     "angular": "1.4.2",

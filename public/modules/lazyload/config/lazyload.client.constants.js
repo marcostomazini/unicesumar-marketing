@@ -12,7 +12,8 @@
           },
           // Angular based script (use the right module name)
           modules: [
-            // {name: 'toaster', files: ['/lib/angularjs-toaster/toaster.js', '/lib/angularjs-toaster/toaster.css']}
+            {name: 'toaster',                   files: ['/lib/angularjs-toaster/toaster.js',
+                                                        '/lib/angularjs-toaster/toaster.css']},
             {name: 'datatables',                files: ['/lib/datatables/media/css/jquery.dataTables.css',
                                                         '/lib/datatables/media/js/jquery.dataTables.js',                                                        
                                                         '/lib/angular-datatables/dist/angular-datatables.js',
@@ -22,7 +23,10 @@
                                                         //'/vendor/angular-datatables.inlineediting.js'
                                                         ], serie: true},
             {name: 'xeditable',                 files: ['/lib/angular-xeditable/dist/js/xeditable.js',
-                                                        '/lib/angular-xeditable/dist/css/xeditable.css']}
+                                                        '/lib/angular-xeditable/dist/css/xeditable.css']},
+            {name: 'oitozero.ngSweetAlert',     files: ['/lib/sweetalert/dist/sweetalert.css',
+                                                        '/lib/sweetalert/dist/sweetalert.min.js',
+                                                        '/lib/angular-sweetalert/SweetAlert.js']},
           ]
         })
         ;

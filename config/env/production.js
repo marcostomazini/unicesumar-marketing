@@ -28,7 +28,8 @@ module.exports = {
 				'public/lib/oclazyload/dist/ocLazyLoad.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 				'public/lib/angular-loading-bar/build/loading-bar.js',
-				'public/lib/jquery.browser/dist/jquery.browser.min.js'
+				'public/lib/jquery.browser/dist/jquery.browser.min.js',
+				'public/lib/underscore/underscore-min.js'
 			]
 		},
 		css: 'public/dist/application.min.css',
