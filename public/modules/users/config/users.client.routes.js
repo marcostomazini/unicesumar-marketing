@@ -41,6 +41,12 @@ angular.module('users').config(['$stateProvider', 'RouteHelpersProvider',
 		state('app.accounts', {
 			url: '/settings/accounts',
 			templateUrl: 'modules/users/views/settings/social-accounts.client.view.html'
+		}).
+		state('app.listUsuariosSistema', {
+			url: '/usuarios-sistema',
+			title: 'Listar Usuários Sistema',
+			templateUrl: 'modules/users/views/list-usuarios-sistema.client.view.html',
+			resolve: helper.resolveFor('datatables')
 		});
 	}
 ]);

@@ -1,58 +1,69 @@
 'use strict';
 
-angular.module('usuarios-mobile').controller('UsuarioMobileController', ['$scope', '$stateParams', '$location', 'Authentication', 'UsuariosMobile',
-	function($scope, $stateParams, $location, Authentication, UsuariosMobile) {
+angular.module('usuarios-mobile').controller('UsuarioMobileController', ['$scope', '$stateParams', '$location', 
+	'Authentication', 'UsuariosMobile', 'DTOptionsBuilder', 'DTColumnDefBuilder',
+	function($scope, $stateParams, $location, Authentication, UsuariosMobile, DTOptionsBuilder, DTColumnDefBuilder) {
 		$scope.authentication = Authentication;
 
-		$scope.create = function() {
-			var article = new Articles({
-				title: this.title,
-				content: this.content
-			});
-			article.$save(function(response) {
-				$location.path('articles/' + response._id);
+		this.dtOptions = DTOptionsBuilder
+		.newOptions()
+	    .withPaginationType('full_numbers')
+	    .withOption('bLengthChange', false)
+	    .withOption('bInfo', false);
+	
+		this.dtColumnDefs = [
+			DTColumnDefBuilder
+				.newColumnDef(0)
+				.withOption('bSearchable', false)
+				.notVisible()
+				.notSortable(),
+	        DTColumnDefBuilder
+	        	.newColumnDef(1)
+	        	.notSortable()
+		];	
 
-				$scope.title = '';
-				$scope.content = '';
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+		$scope.urlBase = '/#!/usuarios-mobile';
 
-		$scope.remove = function(article) {
-			if (article) {
-				article.$remove();
+		// Context
+		$scope.authentication = Authentication;
+		$scope.usuariosMobile = UsuariosMobile.query();
 
-				for (var i in $scope.articles) {
-					if ($scope.articles[i] === article) {
-						$scope.articles.splice(i, 1);
-					}
-				}
-			} else {
-				$scope.article.$remove(function() {
-					$location.path('articles');
-				});
-			}
-		};
+		$scope.deleteConfirm = function(index) {
+			noty({
+				modal: true,
+		        text: 'Tem certeza que deseja deletar o registro?', 
+		        buttons: [
+		            { addClass: 'btn btn-primary', text: 'Sim', onClick: function($noty) {
+		                    $noty.close();
+		                    var caixa = $scope.caixas[index];
 
-		$scope.update = function() {
-			var article = $scope.article;
+							if (caixa) {							
+								caixa.$remove( function (response) {
+									if (response) {
+										$scope.caixas = _.without($scope.caixas, caixa);
 
-			article.$update(function() {
-				$location.path('articles/' + article._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
-
-		$scope.find = function() {
-			$scope.articles = Articles.query();
-		};
-
-		$scope.findOne = function() {
-			$scope.article = Articles.get({
-				articleId: $stateParams.articleId
-			});
+										noty({
+										    text: response.message,
+										    type: response.type
+										});
+									}
+								}, function(errorResponse) {
+									$scope.error = errorResponse.data.message;
+									noty({
+									    text: errorResponse.data.message,
+									    type: errorResponse.data.type
+									});
+								});
+							}
+		                }
+		            },
+		            { 
+		                addClass: 'btn btn-warning', text: 'Não', onClick: function($noty) {
+		                    $noty.close();
+		                }
+		            }
+		        ]
+		    }); 
 		};
 	}
 ]);

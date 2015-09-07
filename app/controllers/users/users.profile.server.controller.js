@@ -56,6 +56,21 @@ exports.update = function(req, res) {
 };
 
 /**
+ * List of usuarioMobiles
+ */
+exports.list = function(req, res) {
+	User.find({}, '-salt -password -providerData -roles -provider').sort('-created').exec(function(err, usuarios) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.json(usuarios);
+		}
+	});
+};
+
+/**
  * Send User
  */
 exports.me = function(req, res) {	

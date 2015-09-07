@@ -13,6 +13,9 @@
           // Angular based script (use the right module name)
           modules: [
             // {name: 'toaster', files: ['/lib/angularjs-toaster/toaster.js', '/lib/angularjs-toaster/toaster.css']}
+            {name: 'datatables',                files: ['/lib/datatables/media/css/jquery.dataTables.css',
+                                                        '/lib/datatables/media/js/jquery.dataTables.js',
+                                                        '/lib/angular-datatables/dist/angular-datatables.js'], serie: true}
           ]
         })
         ;

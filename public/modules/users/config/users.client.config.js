@@ -1,5 +1,6 @@
 'use strict';
 
+
 // Config HTTP Error Handling
 angular.module('users').config(['$httpProvider',
 	function($httpProvider) {
@@ -26,5 +27,11 @@ angular.module('users').config(['$httpProvider',
 				};
 			}
 		]);
+	}
+]).run(['Menus',
+	function(Menus) {
+		// Set top bar menu items
+		Menus.addMenuItem('sidebar', 'Usuários do Sistema', 'usuarios-sistema', 'dropdown', '/usuarios-sistema(/.*)?', false, null, 20, 'icon-user');
+		Menus.addSubMenuItem('sidebar', 'usuarios-sistema', 'Listar usuários', 'usuarios-sistema');
 	}
 ]);

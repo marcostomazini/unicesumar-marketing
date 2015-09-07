@@ -12,8 +12,8 @@
       // Global Settings
       // ----------------------------------- 
       $rootScope.app = {
-        name: 'Angle',
-        description: 'Angular Bootstrap Admin Template',
+        name: 'ArquitetaWeb',
+        description: 'UniMarketing - Sistema para Pré-Inscrições',
         year: ((new Date()).getFullYear()),
         layout: {
           isFixed: true,
