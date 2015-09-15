@@ -11,8 +11,6 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 	'editableOptions', 
 	'editableThemes',
 	'SweetAlert',
-	'toaster',
-	'mySocket',
 	function($scope, 
 		$interval,
 		$stateParams, 
@@ -23,14 +21,8 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 		DTColumnDefBuilder,
 		editableOptions, 
 		editableThemes,
-		SweetAlert,
-		toaster,
-		mySocket) {		
+		SweetAlert) {		
 
-		mySocket.on('broadcast', function(msg) {
-        	toaster.pop('info', 'Nova Sincronização', msg.payload);
-    	});
-	
 		$scope.authentication = Authentication;
 
 		this.dtOptions = DTOptionsBuilder
@@ -65,13 +57,7 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 				name: null,
 				email: null
 			};
-			$scope.usuariosMobile.unshift(novoUsuario);	
-
-			mySocket.emit('message', 'novo');			
-
-			// $interval(function() {
-   //      		toaster.pop('info', 'Nova Sincronização', 'Pré-Inscrição Recebida');
-			// }, 20000);
+			$scope.usuariosMobile.unshift(novoUsuario);				
 		};
 
 		$scope.editItem = function(item) {

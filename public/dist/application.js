@@ -278,10 +278,11 @@ ApplicationConfiguration.registerModule('usuarios-mobile');
           // url: '/',
           abstract: true,
           templateUrl: 'modules/core/views/core.client.view.html',
-          resolve: helper.resolveFor('modernizr', 'icons', 'oitozero.ngSweetAlert', 'toaster')
+          resolve: helper.resolveFor('modernizr', 'icons', 'oitozero.ngSweetAlert', 'toaster', 'btford.socket-io')
         })
         .state('app.home', {
           url: '/home',
+          controller: 'HomeController',
           templateUrl: 'modules/core/views/home.client.view.html'
         })
         // .state('page.signin', {
@@ -380,11 +381,11 @@ ApplicationConfiguration.registerModule('usuarios-mobile');
 
 'use strict';
 
-angular.module('app.core').controller('HeaderController', ['$scope', 'Authentication', 'Menus',
-	function($scope, Authentication, Menus) {
+angular.module('app.core').controller('HeaderController', ['$scope', 'Authentication', 'Menus', 'toaster', 'mySocket',
+	function($scope, Authentication, Menus, toaster, mySocket) {
 		$scope.authentication = Authentication;
 		$scope.isCollapsed = false;
-		$scope.menu = Menus.getMenu('topbar');
+		$scope.menu = Menus.getMenu('topbar');		
 
 		$scope.toggleCollapsibleMenu = function() {
 			$scope.isCollapsed = !$scope.isCollapsed;
@@ -394,6 +395,19 @@ angular.module('app.core').controller('HeaderController', ['$scope', 'Authentica
 		$scope.$on('$stateChangeSuccess', function() {
 			$scope.isCollapsed = false;
 		});
+
+		if (_.isObject($scope.authentication.user)) {
+			mySocket.on('create-usuario', function(data) {
+	        	toaster.pop(data.type, data.title, data.message);
+	    	});
+		}
+	}
+]);
+'use strict';
+
+angular.module('app.core').controller('HomeController', ['$scope', 'Authentication',
+	function($scope, Authentication) {
+
 	}
 ]);
 'use strict';
@@ -568,6 +582,12 @@ angular.module('app.core').service('Menus', [
 		this.addMenu('sidebar');
 	}
 ]);
+'use strict';
+
+//Articles service used for communicating with the articles REST endpoints
+angular.module('app.core').factory('mySocket', ["socketFactory", function(socketFactory) {
+    return socketFactory();
+}]);
 (function() {
     'use strict';
 
@@ -1827,7 +1847,7 @@ angular.module('usuarios-mobile').config(['$stateProvider', 'RouteHelpersProvide
 			url: '/usuarios-mobile',
 			title: 'Listar Usuários Mobile',
 			templateUrl: 'modules/usuarios-mobile/views/list-usuarios-mobile.client.view.html',
-			resolve: helper.resolveFor('datatables', 'xeditable', 'btford.socket-io')
+			resolve: helper.resolveFor('datatables', 'xeditable')
 		});
 	}
 ]);
@@ -1844,8 +1864,6 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 	'editableOptions', 
 	'editableThemes',
 	'SweetAlert',
-	'toaster',
-	'mySocket',
 	function($scope, 
 		$interval,
 		$stateParams, 
@@ -1856,14 +1874,8 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 		DTColumnDefBuilder,
 		editableOptions, 
 		editableThemes,
-		SweetAlert,
-		toaster,
-		mySocket) {		
+		SweetAlert) {		
 
-		mySocket.on('broadcast', function(msg) {
-        	toaster.pop('info', 'Nova Sincronização', msg.payload);
-    	});
-	
 		$scope.authentication = Authentication;
 
 		this.dtOptions = DTOptionsBuilder
@@ -1898,13 +1910,7 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 				name: null,
 				email: null
 			};
-			$scope.usuariosMobile.unshift(novoUsuario);	
-
-			mySocket.emit('message', 'novo');			
-
-			// $interval(function() {
-   //      		toaster.pop('info', 'Nova Sincronização', 'Pré-Inscrição Recebida');
-			// }, 20000);
+			$scope.usuariosMobile.unshift(novoUsuario);				
 		};
 
 		$scope.editItem = function(item) {
@@ -1950,12 +1956,6 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 		};
 	}
 ]);
-'use strict';
-
-//Articles service used for communicating with the articles REST endpoints
-angular.module('usuarios-mobile').factory('mySocket', ["socketFactory", function(socketFactory) {
-    return socketFactory();
-}]);
 'use strict';
 
 //Articles service used for communicating with the articles REST endpoints

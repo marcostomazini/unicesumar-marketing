@@ -29,34 +29,19 @@ var app = require('./config/express')(db);
 // Bootstrap passport config
 require('./config/passport')();
 
-// Start the app by listening on <port>
+// Start the app by listening on <port> and SocketIo
 var server = app.listen(config.port);
-
 var io = require('socket.io')(server);
-
-var socketio = require('socket.io-client');
-var socket = socketio.connect('http://localhost:'+config.port);
-console.log(config.port);
-
-app.set('socketio', socket);
-
-socket.emit('message', 'dsaads');	
-
 io.on('connection', function (socket) {
-	console.log('Um cliente se conectou');
-
-	socket.on('post', function (post) {
-		io.emit('post', post);
-	});
-
-	socket.on('message', function(msg) {
-		console.log(msg);
-        io.sockets.emit('broadcast', {
-            payload: msg,
-            source: 'from'
-        });
+	socket.on('message-toaster', function(data) {
+        io.sockets.emit('create-usuario', data);
     });
 });
+
+// Socket Client
+var socketio = require('socket.io-client');
+var socket = socketio.connect('http://localhost:'+config.port);
+app.set('socketio', socket);
 
 // Expose app
 exports = module.exports = app;
