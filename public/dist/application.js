@@ -597,10 +597,12 @@ angular.module('app.core').service('Menus', [
           scripts: {
             'modernizr':          ['/lib/modernizr/modernizr.js'],
             'icons':              ['/lib/fontawesome/css/font-awesome.min.css',
-                                   '/lib/simple-line-icons/css/simple-line-icons.css']
+                                   '/lib/simple-line-icons/css/simple-line-icons.css']                               
           },
           // Angular based script (use the right module name)
-          modules: [
+          modules: [          
+            {name: 'btford.socket-io',          files: ['/lib/socket-io-client/socket.io.js',
+                                                        '/lib/angular-socket-io/socket.min.js']},
             {name: 'toaster',                   files: ['/lib/angularjs-toaster/toaster.js',
                                                         '/lib/angularjs-toaster/toaster.css']},
             {name: 'datatables',                files: ['/lib/datatables/media/css/jquery.dataTables.css',
@@ -1825,7 +1827,7 @@ angular.module('usuarios-mobile').config(['$stateProvider', 'RouteHelpersProvide
 			url: '/usuarios-mobile',
 			title: 'Listar Usuários Mobile',
 			templateUrl: 'modules/usuarios-mobile/views/list-usuarios-mobile.client.view.html',
-			resolve: helper.resolveFor('datatables', 'xeditable')
+			resolve: helper.resolveFor('datatables', 'xeditable', 'btford.socket-io')
 		});
 	}
 ]);
@@ -1843,6 +1845,7 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 	'editableThemes',
 	'SweetAlert',
 	'toaster',
+	'mySocket',
 	function($scope, 
 		$interval,
 		$stateParams, 
@@ -1854,7 +1857,13 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 		editableOptions, 
 		editableThemes,
 		SweetAlert,
-		toaster) {
+		toaster,
+		mySocket) {		
+
+		mySocket.on('broadcast', function(msg) {
+        	toaster.pop('info', 'Nova Sincronização', msg.payload);
+    	});
+	
 		$scope.authentication = Authentication;
 
 		this.dtOptions = DTOptionsBuilder
@@ -1889,7 +1898,13 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 				name: null,
 				email: null
 			};
-			$scope.usuariosMobile.unshift(novoUsuario);			
+			$scope.usuariosMobile.unshift(novoUsuario);	
+
+			mySocket.emit('message', 'novo');			
+
+			// $interval(function() {
+   //      		toaster.pop('info', 'Nova Sincronização', 'Pré-Inscrição Recebida');
+			// }, 20000);
 		};
 
 		$scope.editItem = function(item) {
@@ -1898,11 +1913,8 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 
 		$scope.saveItem = function(item) {
 			console.log(item);
-		};		
 
-		$interval(function() {
-        	toaster.pop('info', 'Nova Sincronização', 'Pré-Inscrição Recebida');
-		}, 20000);
+		};		
 
 		$scope.deleteConfirm = function(index) {			
 			SweetAlert.swal({   
@@ -1938,6 +1950,12 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 		};
 	}
 ]);
+'use strict';
+
+//Articles service used for communicating with the articles REST endpoints
+angular.module('usuarios-mobile').factory('mySocket', ["socketFactory", function(socketFactory) {
+    return socketFactory();
+}]);
 'use strict';
 
 //Articles service used for communicating with the articles REST endpoints
