@@ -30,7 +30,33 @@ var app = require('./config/express')(db);
 require('./config/passport')();
 
 // Start the app by listening on <port>
-app.listen(config.port);
+var server = app.listen(config.port);
+
+var io = require('socket.io')(server);
+
+var socketio = require('socket.io-client');
+var socket = socketio.connect('http://localhost:'+config.port);
+console.log(config.port);
+
+app.set('socketio', socket);
+
+socket.emit('message', 'dsaads');	
+
+io.on('connection', function (socket) {
+	console.log('Um cliente se conectou');
+
+	socket.on('post', function (post) {
+		io.emit('post', post);
+	});
+
+	socket.on('message', function(msg) {
+		console.log(msg);
+        io.sockets.emit('broadcast', {
+            payload: msg,
+            source: 'from'
+        });
+    });
+});
 
 // Expose app
 exports = module.exports = app;

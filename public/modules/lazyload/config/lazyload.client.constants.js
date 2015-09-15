@@ -8,10 +8,12 @@
           scripts: {
             'modernizr':          ['/lib/modernizr/modernizr.js'],
             'icons':              ['/lib/fontawesome/css/font-awesome.min.css',
-                                   '/lib/simple-line-icons/css/simple-line-icons.css']
+                                   '/lib/simple-line-icons/css/simple-line-icons.css']                               
           },
           // Angular based script (use the right module name)
-          modules: [
+          modules: [          
+            {name: 'btford.socket-io',          files: ['/lib/socket-io-client/socket.io.js',
+                                                        '/lib/angular-socket-io/socket.min.js']},
             {name: 'toaster',                   files: ['/lib/angularjs-toaster/toaster.js',
                                                         '/lib/angularjs-toaster/toaster.css']},
             {name: 'datatables',                files: ['/lib/datatables/media/css/jquery.dataTables.css',

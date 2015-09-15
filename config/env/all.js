@@ -37,7 +37,10 @@ module.exports = {
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 				'public/lib/angular-loading-bar/build/loading-bar.js',
 				'public/lib/jquery.browser/dist/jquery.browser.js',
-				'public/lib/underscore/underscore.js'
+				'public/lib/underscore/underscore.js',
+
+				// 'public/lib/socket-io-client/socket.io.js',
+				// 'public/lib/angular-socket-io/socket.min.js',
 				// 'public/lib/jquery/dist/jquery.js',
 				// 'public/lib/angular/angular.js',
 				// 'public/lib/angular-resource/angular-resource.js',

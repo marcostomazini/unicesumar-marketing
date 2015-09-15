@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	UsuarioMobile = mongoose.model('UsuarioMobile'),
+	io = require('socket.io-client'),    
 	_ = require('lodash');
 
 /**
@@ -20,6 +21,15 @@ exports.create = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+			// var socketio = req.app.get('socketio');	socketclient
+			// var server = req.app.get('server');	
+
+			// var socket = io.connect('http://localhost:3000');
+			// socket.emit('message', 'dsaads');	
+
+			// socketio.emit('message', 'arti123cle');
+			// socketio.sockets.emit('message', 'article');
+
 			// Remove sensitive data before login
 			usuarioMobile.password = undefined;
 			usuarioMobile.salt = undefined;
@@ -74,7 +84,10 @@ exports.delete = function(req, res) {
 /**
  * List of usuarioMobiles
  */
-exports.list = function(req, res) {
+exports.list = function(req, res) {		
+		var socketio = req.app.get('socketio');
+		socketio.emit('message', 'dsaads');
+
 	UsuarioMobile.find({}, '-salt -password').sort('-created').exec(function(err, usuariosMobile) {
 		if (err) {
 			return res.status(400).send({
