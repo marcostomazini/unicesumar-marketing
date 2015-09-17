@@ -1494,7 +1494,7 @@ angular.module('users').config(['$httpProvider',
 ]).run(['Menus',
 	function(Menus) {
 		// Set top bar menu items
-		Menus.addMenuItem('sidebar', 'Usuários do Sistema', 'usuarios-sistema', 'dropdown', '/usuarios-sistema(/.*)?', false, null, 20, 'icon-user');
+		Menus.addMenuItem('sidebar', 'Usuários do Sistema', 'usuarios-sistema', 'dropdown', '/usuarios-sistema(/.*)?', false, null, 20, 'icon-lock');
 		Menus.addSubMenuItem('sidebar', 'usuarios-sistema', 'Listar usuários', 'usuarios-sistema');
 	}
 ]);
@@ -1728,6 +1728,7 @@ angular.module('users').controller('UsuarioSistemaController', ['$scope', '$stat
 	    .withPaginationType('full_numbers')
 	    .withOption('bLengthChange', false)
 	    .withOption('bInfo', false)
+	    .withLanguageSource('/server/pt-br.json')
 	    .withBootstrap();
 	
 		this.dtColumnDefs = [
@@ -1832,7 +1833,7 @@ angular.module('users').factory('UsuariosSistema', ['$resource',
 angular.module('usuarios-mobile').run(['Menus',
 	function(Menus) {
 		// Set top bar menu items
-		Menus.addMenuItem('sidebar', 'Usuários Mobile', 'usuarios-mobile', 'dropdown', '/usuarios-mobile(/.*)?', false, null, 20, 'icon-user');
+		Menus.addMenuItem('sidebar', 'Usuários Mobile', 'usuarios-mobile', 'dropdown', '/usuarios-mobile(/.*)?', false, null, 20, 'icon-users');
 		Menus.addSubMenuItem('sidebar', 'usuarios-mobile', 'Listar usuários', 'usuarios-mobile');
 	}
 ]);
@@ -1864,6 +1865,7 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 	'editableOptions', 
 	'editableThemes',
 	'SweetAlert',
+	'$modal',
 	function($scope, 
 		$interval,
 		$stateParams, 
@@ -1874,7 +1876,8 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 		DTColumnDefBuilder,
 		editableOptions, 
 		editableThemes,
-		SweetAlert) {		
+		SweetAlert,
+		$modal) {		
 
 		$scope.authentication = Authentication;
 
@@ -1883,6 +1886,7 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 	    .withPaginationType('full_numbers')
 	    .withOption('bLengthChange', false)
 	    .withOption('bInfo', false)
+	    .withLanguageSource('/server/pt-br.json')
 	    .withBootstrap();
 	
 		this.dtColumnDefs = [
@@ -1905,12 +1909,36 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 		$scope.authentication = Authentication;
 		$scope.usuariosMobile = UsuariosMobile.query();
 
+		ModalInstanceCtrl.$inject = ['$scope', '$modalInstance'];
+          function ModalInstanceCtrl($scope, $modalInstance) {
+
+            $scope.ok = function () {
+              $modalInstance.close('closed');
+            };
+
+            $scope.cancel = function () {
+              $modalInstance.dismiss('cancel');
+            };
+          }
+
 		$scope.addItem = function(item) {
-			var novoUsuario = {
-				name: null,
-				email: null
-			};
-			$scope.usuariosMobile.unshift(novoUsuario);				
+			// var novoUsuario = {
+			// 	name: null,
+			// 	email: null
+			// };
+			// $scope.usuariosMobile.unshift(novoUsuario);				
+			var modalInstance = $modal.open({
+            	templateUrl: 'modalInserir.html',
+            	controller: ModalInstanceCtrl,
+            	//size: size
+            });
+
+            var state = $('#modal-state');
+            modalInstance.result.then(function () {
+            	state.text('Modal dismissed with OK status');
+            }, function () {
+            	state.text('Modal dismissed with Cancel status');
+            });
 		};
 
 		$scope.editItem = function(item) {
