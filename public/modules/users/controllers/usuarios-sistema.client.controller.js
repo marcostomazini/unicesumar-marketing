@@ -10,6 +10,7 @@ angular.module('users').controller('UsuarioSistemaController', ['$scope', '$stat
 	    .withPaginationType('full_numbers')
 	    .withOption('bLengthChange', false)
 	    .withOption('bInfo', false)
+	    .withLanguageSource('/server/pt-br.json')
 	    .withBootstrap();
 	
 		this.dtColumnDefs = [

@@ -11,6 +11,7 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 	'editableOptions', 
 	'editableThemes',
 	'SweetAlert',
+	'$modal',
 	function($scope, 
 		$interval,
 		$stateParams, 
@@ -21,7 +22,8 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 		DTColumnDefBuilder,
 		editableOptions, 
 		editableThemes,
-		SweetAlert) {		
+		SweetAlert,
+		$modal) {		
 
 		$scope.authentication = Authentication;
 
@@ -30,6 +32,7 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 	    .withPaginationType('full_numbers')
 	    .withOption('bLengthChange', false)
 	    .withOption('bInfo', false)
+	    .withLanguageSource('/server/pt-br.json')
 	    .withBootstrap();
 	
 		this.dtColumnDefs = [
@@ -52,12 +55,36 @@ angular.module('usuarios-mobile').controller('UsuarioMobileController', [
 		$scope.authentication = Authentication;
 		$scope.usuariosMobile = UsuariosMobile.query();
 
+		ModalInstanceCtrl.$inject = ['$scope', '$modalInstance'];
+          function ModalInstanceCtrl($scope, $modalInstance) {
+
+            $scope.ok = function () {
+              $modalInstance.close('closed');
+            };
+
+            $scope.cancel = function () {
+              $modalInstance.dismiss('cancel');
+            };
+          }
+
 		$scope.addItem = function(item) {
-			var novoUsuario = {
-				name: null,
-				email: null
-			};
-			$scope.usuariosMobile.unshift(novoUsuario);				
+			// var novoUsuario = {
+			// 	name: null,
+			// 	email: null
+			// };
+			// $scope.usuariosMobile.unshift(novoUsuario);				
+			var modalInstance = $modal.open({
+            	templateUrl: 'modalInserir.html',
+            	controller: ModalInstanceCtrl,
+            	//size: size
+            });
+
+            var state = $('#modal-state');
+            modalInstance.result.then(function () {
+            	state.text('Modal dismissed with OK status');
+            }, function () {
+            	state.text('Modal dismissed with Cancel status');
+            });
 		};
 
 		$scope.editItem = function(item) {
